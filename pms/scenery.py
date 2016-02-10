@@ -8,3 +8,6 @@ class T_Scenery(ctypes.Structure):
     ('text', ctypes.c_char * 50),
     ('timestamp', ctypes.c_uint32)
   ]
+
+  def filename(self):
+    return self.__getattribute__('text')[:self.__getattribute__('length')]

@@ -30,3 +30,33 @@ T_Polytype = (
   'nonflaggercollides',
   'flagcollides'
 )
+
+T_Spawntype = (
+  'general',
+  'alpha',
+  'bravo',
+  'charlie',
+  'delta',
+  'alpha_flag',
+  'bravo_flag',
+  'grenades',
+  'medkits',
+  'clusers',
+  'vest',
+  'flamer',
+  'berserker',
+  'predator',
+  'yellow_flag',
+  'rambo_bow',
+  'stat_gun'
+)
+
+T_WaypointActions = (
+  'none',
+  'stop_and_camp',
+  'wait_1_second',
+  'wait_5_seconds',
+  'wait_10_seconds',
+  'wait_15_seconds',
+  'wait_20_seconds'
+)
