@@ -1,5 +1,5 @@
 from pms import PmsReader
-from pms.constants import T_Spawntype
+
 
 def main():
   filename = 'maps/ctf_Ash.pms'
@@ -10,7 +10,6 @@ def main():
 
   for scenery in soldat_map.sceneries:
     print scenery.filename()
-
 
 if __name__ == '__main__':
   main()

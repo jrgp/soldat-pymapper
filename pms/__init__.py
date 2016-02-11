@@ -41,7 +41,7 @@ class PmsReader(object):
         self.polygons.append(polygon)
 
       # Skip sector data we don't immediately care about
-      sector_division = self._get_long(h)
+      self._get_long(h)
       num_sectors = self._get_long(h)
       for i in xrange(((num_sectors * 2) + 1) * ((num_sectors * 2) + 1)):
         sector_polys = unpack('H', h.read(2))[0]
@@ -82,7 +82,6 @@ class PmsReader(object):
         waypoint = T_Waypoint()
         h.readinto(waypoint)
         self.waypoints.append(waypoint)
-
 
   @property
   def name(self):
