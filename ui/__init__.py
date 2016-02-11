@@ -1,5 +1,7 @@
+from __future__ import division
 import os
 import sys
+import signal
 from PyQt4 import QtGui, QtCore, uic
 from ui.state import MapState, LoadMapException
 from ui.renderer import MapWidget
@@ -58,9 +60,12 @@ class MainWindow(QtGui.QMainWindow):
     # Pass off... everything to the renderer class
     self.map_widget.render_map(self.state.pms_object, self.state.soldat_path)
 
+  def wheelEvent(self, event):
+    self.map_widget.alter_zoom(event.delta() / 1000)
+
 
 def main():
-    
+  signal.signal(signal.SIGINT, signal.SIG_DFL)
   app = QtGui.QApplication(sys.argv)
   window = MainWindow()
   window.show()
