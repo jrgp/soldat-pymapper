@@ -8,17 +8,24 @@ class ImageLoader:
     self.soldat_path = soldat_path
     self.images = {}
 
-  def load_image(self, usage, filename):
-    key = (usage, filename)
-    if key in self.images:
-      return self.images[key]
+  def find_file(self, usage, filename):
     path = os.path.join(self.soldat_path, 'textures', filename)
-
     if not os.path.exists(path):
       if path.split('.')[-1] == 'bmp':
         path = '.'.join(path.split('.')[:-1] + ['png'])
         if not os.path.exists(path):
           return None
+    return path
+
+  def load_image(self, usage, filename):
+    key = (usage, filename)
+    if key in self.images:
+      return self.images[key]
+
+    path = self.find_file(*key)
+
+    if not path:
+      return None
 
     img = Image.open(path)
     self.images[key] = dict(
