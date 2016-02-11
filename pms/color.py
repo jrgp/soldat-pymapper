@@ -1,3 +1,4 @@
+from __future__ import division
 import ctypes
 
 
@@ -9,3 +10,6 @@ class T_Color(ctypes.Structure):
       ('red', ctypes.c_ubyte),
       ('alpha', ctypes.c_ubyte),
   ]
+
+  def for_gl_color(self):
+    return [self.__getattribute__(key) / 255 for key in 'red', 'green', 'blue', 'alpha']

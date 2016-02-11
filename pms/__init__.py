@@ -22,6 +22,10 @@ class PmsReader(object):
     self.colliders = []
     self.spawnpoints = []
     self.waypoints = []
+    self.min_x = 0
+    self.max_x = 0
+    self.min_y = 0
+    self.max_y = 0
     self.header = None
 
   def _get_long(self, handle):
@@ -41,12 +45,17 @@ class PmsReader(object):
         self.polygons.append(polygon)
 
       # Skip sector data we don't immediately care about
-      self._get_long(h)
+      sector_division = self._get_long(h)
       num_sectors = self._get_long(h)
       for i in xrange(((num_sectors * 2) + 1) * ((num_sectors * 2) + 1)):
         sector_polys = unpack('H', h.read(2))[0]
         for j in xrange(sector_polys):
           h.read(2)
+
+      self.min_x = sector_division * -num_sectors
+      self.min_y = sector_division * -num_sectors
+      self.max_x = sector_division * num_sectors
+      self.max_y = sector_division * num_sectors
 
       # All props (scenery placements)
       prop_count = self._get_long(h)
