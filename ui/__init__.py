@@ -47,11 +47,14 @@ class MainWindow(QtGui.QMainWindow):
     sys.exit(0)
 
   def _load_map(self, path):
+
+    if not path:
+      return
+
     try:
       self.state.load_map(path)
     except LoadMapException as e:
-      # XXX: make this an error dialog
-      print 'Failed loading map' + e
+      QtGui.QMessageBox.critical(None, 'Failed loading map', str(e))
       return
 
     # At this point, we have a working map object
@@ -69,6 +72,6 @@ def main():
   app = QtGui.QApplication(sys.argv)
   window = MainWindow()
   window.show()
-  if len(sys.argv) > 1 and os.path.exists(sys.argv[1]):
+  if len(sys.argv) > 1:
     window._load_map(sys.argv[1])
   sys.exit(app.exec_())

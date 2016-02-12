@@ -23,6 +23,6 @@ class MapState:
 
   def load_map(self, path):
     if not os.path.exists(path):
-      raise LoadMapException('File not found')
+      raise LoadMapException('File "{}" not found'.format(path))
     self.pms_object = PmsReader(path)
     self.pms_object.parse()
