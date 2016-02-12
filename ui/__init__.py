@@ -1,4 +1,3 @@
-from __future__ import division
 import os
 import sys
 import signal
@@ -57,14 +56,9 @@ class MainWindow(QtGui.QMainWindow):
       QtGui.QMessageBox.critical(None, 'Failed loading map', str(e))
       return
 
-    # At this point, we have a working map object
     self.setWindowTitle('{} - {}'.format(self.state.pms_object.name, self.APP_NAME))
-
-    # Pass off... everything to the renderer class
     self.map_widget.render_map(self.state.pms_object, self.state.soldat_path)
 
-  def wheelEvent(self, event):
-    self.map_widget.alter_zoom(event.delta() / 1000)
 
 
 def main():

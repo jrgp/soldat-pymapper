@@ -1,4 +1,5 @@
 # apt-get install python-qt4-gl python-opengl
+from __future__ import division
 from PyQt4 import QtOpenGL
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -74,3 +75,7 @@ class MapWidget(QtOpenGL.QGLWidget):
     glLoadIdentity()
     glTranslatef(0.0, 0.0, 0.0)
     glFlush()
+
+  # Let us zoom
+  def wheelEvent(self, event):
+    self.alter_zoom(event.delta() / 5000)
