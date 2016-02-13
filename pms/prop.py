@@ -1,5 +1,6 @@
 import ctypes
 from pms.color import T_Color
+from pms.constants import T_PropLevel
 
 
 class T_Prop(ctypes.Structure):
@@ -21,3 +22,7 @@ class T_Prop(ctypes.Structure):
       ('Level', ctypes.c_ubyte),
       ('_filler_3', ctypes.c_ubyte * 3),
   ]
+
+  @property
+  def LevelText(self):
+    return T_PropLevel[self.__getattribute__('Level')]

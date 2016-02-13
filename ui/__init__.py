@@ -21,9 +21,12 @@ class MainWindow(QtGui.QMainWindow):
     self.ui = uic.loadUi('ui/mainwindow.ui', self)
 
     # Register all navbar calls..
-    self.connect(self.ui.actionOpen_Map, QtCore.SIGNAL('triggered()'), self, QtCore.SLOT('open()'))
-    self.connect(self.ui.actionSave_Map, QtCore.SIGNAL('triggered()'), self, QtCore.SLOT('save()'))
-    self.connect(self.ui.actionQuit, QtCore.SIGNAL('triggered()'), self, QtCore.SLOT('quit()'))
+    self.ui.actionOpen_Map.triggered.connect(self.open)
+    self.ui.actionSave_Map.triggered.connect(self.save)
+    self.ui.actionQuit.triggered.connect(self.quit)
+    self.ui.texturesCheckBox.stateChanged.connect(self.toggle_textures)
+    self.ui.sceneryCheckBox.stateChanged.connect(self.toggle_scenery)
+    self.ui.wireframeCheckBox.stateChanged.connect(self.toggle_wireframe)
 
     # Keep all app state in this class..
     self.state = MapState()
@@ -39,11 +42,26 @@ class MainWindow(QtGui.QMainWindow):
 
   @QtCore.pyqtSlot()
   def save(self):
-    print 'Will save map'
+    pass
 
   @QtCore.pyqtSlot()
   def quit(self):
     sys.exit(0)
+
+  @QtCore.pyqtSlot()
+  def toggle_textures(self):
+    self.map_widget.show_textures = self.ui.texturesCheckBox.isChecked()
+    self.map_widget.update()
+
+  @QtCore.pyqtSlot()
+  def toggle_scenery(self):
+    self.map_widget.show_scenery = self.ui.sceneryCheckBox.isChecked()
+    self.map_widget.update()
+
+  @QtCore.pyqtSlot()
+  def toggle_wireframe(self):
+    self.map_widget.show_wireframe = self.ui.wireframeCheckBox.isChecked()
+    self.map_widget.update()
 
   def _load_map(self, path):
 
@@ -58,7 +76,26 @@ class MainWindow(QtGui.QMainWindow):
 
     self.setWindowTitle('{} - {}'.format(self.state.pms_object.name, self.APP_NAME))
     self.map_widget.render_map(self.state.pms_object, self.state.soldat_path)
+    self.ui.statusbar.showMessage(os.path.basename(str(path)))
 
+  def keyPressEvent(self, event):
+    if type(event) != QtGui.QKeyEvent:
+      return
+
+    key = event.key()
+
+    if key == QtCore.Qt.Key_A:
+      self.map_widget.scroll_x -= 200
+    elif key == QtCore.Qt.Key_D:
+      self.map_widget.scroll_x += 200
+    elif key == QtCore.Qt.Key_W:
+      self.map_widget.scroll_y -= 200
+    elif key == QtCore.Qt.Key_S:
+      self.map_widget.scroll_y += 200
+    else:
+      return
+
+    self.map_widget.update()
 
 
 def main():

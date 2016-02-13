@@ -17,7 +17,7 @@ class PmsReader(object):
   def __init__(self, filename):
     self.filename = filename
     self.props = []
-    self.sceneries = []
+    self.sceneries = {}
     self.polygons = []
     self.colliders = []
     self.spawnpoints = []
@@ -29,6 +29,8 @@ class PmsReader(object):
     self.header = None
 
   def _get_long(self, handle):
+    # The < is the equivalent of __pack__=1 in our structures, to
+    # make it load the packed data properly.
     return unpack('<l', handle.read(4))[0]
 
   def parse(self):
@@ -69,7 +71,7 @@ class PmsReader(object):
       for i in xrange(scenery_count):
         scenery = T_Scenery()
         h.readinto(scenery)
-        self.sceneries.append(scenery)
+        self.sceneries[i + 1] = scenery
 
       # Colliders
       collider_count = self._get_long(h)
@@ -99,3 +101,6 @@ class PmsReader(object):
   @property
   def texture(self):
     return self.header.Texture.filename()
+
+  def write(self):
+    pass
