@@ -45,7 +45,11 @@ class ImageLoader:
       self.images[key] = None
       return self.images[key]
 
-    img = Image.open(path)
+    try:
+      img = Image.open(path)
+    except IOError:
+      self.images[key] = None
+      return self.images[key]
     # img.convert('RGBA')
 
     # if self._transparency(img):
