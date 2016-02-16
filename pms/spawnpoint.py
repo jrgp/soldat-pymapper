@@ -8,5 +8,5 @@ class T_Spawnpoint(ctypes.Structure):
       ('_filler_', ctypes.c_ubyte * 3),
       ('x', ctypes.c_uint32),
       ('y', ctypes.c_uint32),
-      ('Type', ctypes.c_ubyte),
+      ('Type', ctypes.c_int),
   ]
