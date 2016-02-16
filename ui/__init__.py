@@ -4,6 +4,7 @@ import signal
 from PyQt4 import QtGui, QtCore, uic
 from ui.state import MapState, LoadMapException
 from ui.renderer import MapWidget
+from ui.map_properties import MapPropertiesWindow
 
 
 class MainWindow(QtGui.QMainWindow):
@@ -23,6 +24,7 @@ class MainWindow(QtGui.QMainWindow):
     # Register all navbar calls..
     self.ui.actionOpen_Map.triggered.connect(self.open)
     self.ui.actionSave_Map.triggered.connect(self.save)
+    self.ui.actionMap_Properties.triggered.connect(self.show_properties)
     self.ui.actionQuit.triggered.connect(self.quit)
 
     # View item checkboxes
@@ -40,6 +42,9 @@ class MainWindow(QtGui.QMainWindow):
     self.setCentralWidget(self.map_widget)
     self.map_widget.show()
 
+    # Our map properties window that has stuff like texture and name and stuff
+    self.map_properties = MapPropertiesWindow(self.state)
+
   @QtCore.pyqtSlot()
   def open(self):
     self._load_map(QtGui.QFileDialog.getOpenFileName())
@@ -51,6 +56,11 @@ class MainWindow(QtGui.QMainWindow):
   @QtCore.pyqtSlot()
   def quit(self):
     sys.exit(0)
+
+  @QtCore.pyqtSlot()
+  def show_properties(self):
+    self.map_properties.update_info()
+    self.map_properties.show()
 
   @QtCore.pyqtSlot()
   def toggle_item(self, item, element):
@@ -70,7 +80,7 @@ class MainWindow(QtGui.QMainWindow):
 
     self.setWindowTitle('{} - {}'.format(self.state.pms_object.name, self.APP_NAME))
     self.map_widget.render_map(self.state.pms_object, self.state.soldat_path)
-    self.ui.statusbar.showMessage(os.path.basename(str(path)))
+    self.ui.statusbar.showMessage(os.path.abspath(str(path)))
 
   def keyPressEvent(self, event):
     if type(event) != QtGui.QKeyEvent:

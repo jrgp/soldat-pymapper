@@ -10,6 +10,13 @@ import math
 
 
 class MapWidget(QtOpenGL.QGLWidget):
+
+  '''
+    Render map and interact with it using OpenGl. All of this was pieced together
+    from various tutorials on the internet and ancient soldat forums threads, as
+    well as the polyworks source.
+  '''
+
   def __init__(self):
     QtOpenGL.QGLWidget.__init__(self)
     self.pms = None

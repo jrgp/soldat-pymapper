@@ -11,7 +11,10 @@ from pms.waypoint import T_Waypoint
 
 class PmsReader(object):
   '''
-    Parse a Soldat pms map file
+    Parse a Soldat pms map file.
+    - 
+    All of this code is my own, using the PMS map structure guide at the devs
+    wiki as a reference for the structures.
   '''
 
   def __init__(self, filename):
