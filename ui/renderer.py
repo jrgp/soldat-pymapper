@@ -8,6 +8,8 @@ from ui.image_loader import ImageLoader
 import itertools
 import math
 
+from pms.constants import T_Spawntype
+
 
 class MapWidget(QtOpenGL.QGLWidget):
 
@@ -28,6 +30,7 @@ class MapWidget(QtOpenGL.QGLWidget):
         polygons=True,
         scenery=True,
         wireframe=False,
+        spawns=False,
         background=True
     )
 
@@ -130,6 +133,37 @@ class MapWidget(QtOpenGL.QGLWidget):
       glEnd()
       glPopMatrix()
 
+  def _spawns(self):
+
+    if not self.show_items['spawns']:
+      return
+
+    avail_pics = [
+        'alpha', 'bravo', 'general', 'alpha_flag', 'bravo_flag', 'yellow_flag',
+        'medkit', 'cluster', 'grenades', 'vest', 'predator', 'berserker', 'flamer']
+
+    for spawn in self.pms.spawnpoints:
+      if T_Spawntype[spawn.Type] not in avail_pics:
+        continue
+
+      img = self.images.load_image('res', '{}.png'.format(T_Spawntype[spawn.Type]))
+      if not img:
+        print 'Failed loading image for {}'.format(T_Spawntype[spawn.Type])
+        continue
+
+      glPushMatrix()
+      glTranslatef(spawn.x, spawn.y, 0.0)
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img['x'], img['y'], 0, GL_RGB, GL_UNSIGNED_BYTE, img['ref'])
+      glBegin(GL_QUADS)
+      glColor4f(1, 1, 1, .9)
+      glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0)
+      glTexCoord2f(0.0, 1.0); glVertex2f(0.0, img['y'])
+      glTexCoord2f(1.0, 1.0); glVertex2f(img['x'], img['y'])
+      glTexCoord2f(1.0, 0.0); glVertex2f(img['x'], 0.0)
+
+      glEnd()
+      glPopMatrix()
+
   def paintGL(self):
     if not self.pms:
       return
@@ -144,8 +178,9 @@ class MapWidget(QtOpenGL.QGLWidget):
     glClear(GL_COLOR_BUFFER_BIT)
 
     self._background_gradient()
-   # self._props(lambda x: x.LevelText != 'None')
+    # self._props(lambda x: x.LevelText != 'None')
     self._polys()
+    self._spawns()
     # self._props(lambda x: x.LevelText == 'None')
 
     glLoadIdentity()

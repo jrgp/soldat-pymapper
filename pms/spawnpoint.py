@@ -6,7 +6,7 @@ class T_Spawnpoint(ctypes.Structure):
   _fields_ = [
       ('Active', ctypes.c_ubyte),
       ('_filler_', ctypes.c_ubyte * 3),
-      ('x', ctypes.c_uint32),
-      ('y', ctypes.c_uint32),
+      ('x', ctypes.c_int),
+      ('y', ctypes.c_int),
       ('Type', ctypes.c_int),
   ]

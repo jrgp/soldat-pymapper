@@ -10,6 +10,10 @@ class ImageLoader:
 
   def _find_file(self, folder, filename):
 
+    if folder == 'res':
+      path = os.path.join(folder, filename)
+      return path
+
     path = os.path.join(self.soldat_path, folder, filename)
     if not os.path.exists(path):
       if path.split('.')[-1] == 'bmp':

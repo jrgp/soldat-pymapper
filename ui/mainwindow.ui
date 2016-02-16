@@ -154,6 +154,19 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QCheckBox" name="spawnsCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>100</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Spawns</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <action name="actionOpen_Map">

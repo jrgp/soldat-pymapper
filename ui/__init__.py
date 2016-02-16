@@ -33,6 +33,7 @@ class MainWindow(QtGui.QMainWindow):
     self.ui.polygonsCheckBox.stateChanged.connect(lambda: self.toggle_item('polygons', self.ui.polygonsCheckBox))
     self.ui.wireframeCheckBox.stateChanged.connect(lambda: self.toggle_item('wireframe', self.ui.wireframeCheckBox))
     self.ui.backgroundCheckBox.stateChanged.connect(lambda: self.toggle_item('background', self.ui.backgroundCheckBox))
+    self.ui.spawnsCheckBox.stateChanged.connect(lambda: self.toggle_item('spawns', self.ui.spawnsCheckBox))
 
     # Keep all app state in this class..
     self.state = MapState()
