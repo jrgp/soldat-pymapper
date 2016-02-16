@@ -15,9 +15,14 @@ class MapWidget(QtOpenGL.QGLWidget):
     self.pms = None
     self.images = None
     self.zoom = .3
-    self.show_textures = True
-    self.show_scenery = True
-    self.show_wireframe = False
+
+    self.show_items = dict(
+        textures=True,
+        polygons=True,
+        scenery=True,
+        wireframe=False,
+        background=True
+    )
 
     self.scroll_x = 0
     self.scroll_y = 0
@@ -27,53 +32,64 @@ class MapWidget(QtOpenGL.QGLWidget):
     self.update()
     self.images = ImageLoader(soldat_path)
 
-  # Let us zoom
+  # Zoom on scroll wheel
   def wheelEvent(self, event):
     self.zoom -= event.delta() / 5000
     if self.zoom <= .1:
       self.zoom = .1
     self.update()
 
-
   def _background_gradient(self):
+
+    # When showing backgroun is disabled just make it solid white
+    if self.show_items['background']:
+      top_color = self.pms.header.BackgroundColorTop.for_gl_color
+      bottom_color = self.pms.header.BackgroundColorBottom.for_gl_color
+    else:
+      top_color = bottom_color = (1, 1, 1, 1)
+
     glDisable(GL_TEXTURE_2D)
     glBegin(GL_POLYGON)
-    glColor4f(*self.pms.header.BackgroundColorTop.for_gl_color)
+    glColor4f(*top_color)
     glVertex2f(self.pms.min_x, -self.pms.max_y)
     glVertex2f(self.pms.max_x, -self.pms.max_y)
-    glColor4f(*self.pms.header.BackgroundColorBottom.for_gl_color)
+    glColor4f(*bottom_color)
     glVertex2f(self.pms.max_x, -self.pms.min_y)
     glVertex2f(self.pms.min_x, -self.pms.min_y)
     glEnd()
     glEnable(GL_TEXTURE_2D)
 
   def _polys(self):
+
+    if not self.show_items['polygons']:
+      return
+
     glShadeModel(GL_SMOOTH)
 
-    if self.show_textures:
+    if self.show_items['textures']:
       img = self.images.load_image('textures', self.pms.header.Texture.filename())
       if img:
         glTexImage2D(GL_TEXTURE_2D, 0, 3, img['x'], img['y'], 0, GL_RGB, GL_UNSIGNED_BYTE, img['ref'])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 
-    if self.show_wireframe:
+    if self.show_items['wireframe']:
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
     glBegin(GL_TRIANGLES)
     for polygon in self.pms.polygons:
       for vertex in polygon.Vertexes:
         glColor4f(*vertex.color.for_gl_color)
-        if self.show_textures:
+        if self.show_items['textures']:
           glTexCoord3f(vertex.tu, vertex.tv, vertex.rhw)
         glVertex3f(vertex.x, vertex.y, 0)
     glEnd()
 
-    if self.show_wireframe:
+    if self.show_items['wireframe']:
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
   def _props(self, select=lambda x: True):
-    if not self.show_scenery:
+    if not self.show_items['scenery']:
       return
 
     for prop in itertools.ifilter(select, self.pms.props):
@@ -88,26 +104,24 @@ class MapWidget(QtOpenGL.QGLWidget):
         continue
 
       glPushMatrix()
-      glTranslatef(prop.x, prop.y, 0.0)
-      glRotatef(prop.Rotation * (180.0/math.pi), 0.0, 0.0, 1.0)
+      glTranslatef(prop.x, -prop.y, 0.0)
+      glRotatef(prop.Rotation * (180.0 / math.pi), 0.0, 0.0, 1.0)
       glScalef(prop.ScaleX, prop.ScaleY, 0.0)
       glTexImage2D(GL_TEXTURE_2D, 0, 3, img['x'], img['y'], 0, GL_RGB, GL_UNSIGNED_BYTE, img['ref'])
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+
       glBegin(GL_QUADS)
 
       glColor4f(*prop.Color.for_gl_color)
 
-      glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0)
-      glTexCoord2f(0.0, 1.0); glVertex2f(0, prop.Height)
-      glTexCoord2f(1.0, 1.0); glVertex2f(prop.Width, prop.Height)
-      glTexCoord2f(1.0, 0.0); glVertex2f(prop.Width, 0.0)
-
+      glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 0.0)
+      glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0.0, prop.Height, 0.0)
+      glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(prop.Width, prop.Height, 0.0)
+      glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(prop.Width, 0.0, 0.0)
 
       glEnd()
       glPopMatrix()
-
-
 
   def paintGL(self):
     if not self.pms:
@@ -129,3 +143,11 @@ class MapWidget(QtOpenGL.QGLWidget):
 
     glLoadIdentity()
     glFlush()
+
+  def resizeGL(self, h, w):
+    if w > h:
+      new_w = w - h
+    else:
+      new_w = 0
+
+    glViewport(0, new_w, max(w, h), max(w, h))

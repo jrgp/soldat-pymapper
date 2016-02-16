@@ -46,9 +46,9 @@ class ImageLoader:
       return self.images[key]
 
     img = Image.open(path)
-    #img.convert('RGBA')
+    # img.convert('RGBA')
 
-    #if self._transparency(img):
+    # if self._transparency(img):
     #  print '{} uses fake transparency'.format(path)
 
     try:

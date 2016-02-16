@@ -24,9 +24,13 @@ class MainWindow(QtGui.QMainWindow):
     self.ui.actionOpen_Map.triggered.connect(self.open)
     self.ui.actionSave_Map.triggered.connect(self.save)
     self.ui.actionQuit.triggered.connect(self.quit)
-    self.ui.texturesCheckBox.stateChanged.connect(self.toggle_textures)
-    self.ui.sceneryCheckBox.stateChanged.connect(self.toggle_scenery)
-    self.ui.wireframeCheckBox.stateChanged.connect(self.toggle_wireframe)
+
+    # View item checkboxes
+    self.ui.texturesCheckBox.stateChanged.connect(lambda: self.toggle_item('textures', self.ui.texturesCheckBox))
+    self.ui.sceneryCheckBox.stateChanged.connect(lambda: self.toggle_item('scenery', self.ui.sceneryCheckBox))
+    self.ui.polygonsCheckBox.stateChanged.connect(lambda: self.toggle_item('polygons', self.ui.polygonsCheckBox))
+    self.ui.wireframeCheckBox.stateChanged.connect(lambda: self.toggle_item('wireframe', self.ui.wireframeCheckBox))
+    self.ui.backgroundCheckBox.stateChanged.connect(lambda: self.toggle_item('background', self.ui.backgroundCheckBox))
 
     # Keep all app state in this class..
     self.state = MapState()
@@ -49,18 +53,8 @@ class MainWindow(QtGui.QMainWindow):
     sys.exit(0)
 
   @QtCore.pyqtSlot()
-  def toggle_textures(self):
-    self.map_widget.show_textures = self.ui.texturesCheckBox.isChecked()
-    self.map_widget.update()
-
-  @QtCore.pyqtSlot()
-  def toggle_scenery(self):
-    self.map_widget.show_scenery = self.ui.sceneryCheckBox.isChecked()
-    self.map_widget.update()
-
-  @QtCore.pyqtSlot()
-  def toggle_wireframe(self):
-    self.map_widget.show_wireframe = self.ui.wireframeCheckBox.isChecked()
+  def toggle_item(self, item, element):
+    self.map_widget.show_items[item] = element.isChecked()
     self.map_widget.update()
 
   def _load_map(self, path):
