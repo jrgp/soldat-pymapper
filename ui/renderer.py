@@ -122,10 +122,10 @@ class MapWidget(QtOpenGL.QGLWidget):
 
       glColor4f(*prop.Color.for_gl_color)
 
-      glTexCoord3f(0.0, 0.0, 0.0); glVertex3f(0.0, 0.0, 0.0)
-      glTexCoord3f(0.0, 1.0, 0.0); glVertex3f(0.0, prop.Height, 0.0)
-      glTexCoord3f(1.0, 1.0, 0.0); glVertex3f(prop.Width, prop.Height, 0.0)
-      glTexCoord3f(1.0, 0.0, 0.0); glVertex3f(prop.Width, 0.0, 0.0)
+      glTexCoord2f(0.0, 0.0); glVertex2f(0.0, 0.0)
+      glTexCoord2f(0.0, 1.0); glVertex2f(0.0, prop.Height)
+      glTexCoord2f(1.0, 1.0); glVertex2f(prop.Width, prop.Height)
+      glTexCoord2f(1.0, 0.0); glVertex2f(prop.Width, 0.0)
 
       glEnd()
       glPopMatrix()
@@ -144,9 +144,9 @@ class MapWidget(QtOpenGL.QGLWidget):
     glClear(GL_COLOR_BUFFER_BIT)
 
     self._background_gradient()
-    self._props(lambda x: x.LevelText != 'None')
+   # self._props(lambda x: x.LevelText != 'None')
     self._polys()
-    self._props(lambda x: x.LevelText == 'None')
+    # self._props(lambda x: x.LevelText == 'None')
 
     glLoadIdentity()
     glFlush()
