@@ -1,5 +1,6 @@
-from PyQt4 import QtGui, QtCore, uic
+from PyQt4 import QtGui, uic
 from pms.constants import T_Steps, T_Weather
+
 
 class MapPropertiesWindow(QtGui.QMainWindow):
 
