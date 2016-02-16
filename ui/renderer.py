@@ -53,7 +53,7 @@ class MapWidget(QtOpenGL.QGLWidget):
       top_color = self.pms.header.BackgroundColorTop.for_gl_color
       bottom_color = self.pms.header.BackgroundColorBottom.for_gl_color
     else:
-      top_color = bottom_color = (1, 1, 1, 1)
+      top_color = bottom_color = 1, 1, 1, 1
 
     glDisable(GL_TEXTURE_2D)
     glBegin(GL_POLYGON)
