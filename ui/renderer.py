@@ -31,6 +31,7 @@ class MapWidget(QtOpenGL.QGLWidget):
         scenery=True,
         wireframe=False,
         spawns=False,
+        grid=False,
         background=True
     )
 
@@ -164,6 +165,21 @@ class MapWidget(QtOpenGL.QGLWidget):
       glEnd()
       glPopMatrix()
 
+
+  def _grid(self):
+    if not self.show_items['grid']:
+      return
+    spacing = 100
+    glBegin(GL_LINES)
+    glColor4f(0, 0, 0, .2)
+    for x in range(self.pms.min_x, self.pms.max_x, spacing):
+      for y in range(self.pms.min_y, self.pms.max_y, spacing):
+        glVertex3f(x, self.pms.min_y, 0)
+        glVertex3f(x, self.pms.max_y, 0)
+        glVertex3f(self.pms.min_x, y, 0)
+        glVertex3f(self.pms.max_x, y, 0)
+    glEnd()
+
   def paintGL(self):
     if not self.pms:
       return
@@ -178,10 +194,11 @@ class MapWidget(QtOpenGL.QGLWidget):
     glClear(GL_COLOR_BUFFER_BIT)
 
     self._background_gradient()
-    # self._props(lambda x: x.LevelText != 'None')
+    self._props(lambda x: x.LevelText != 'None')
     self._polys()
     self._spawns()
-    # self._props(lambda x: x.LevelText == 'None')
+    self._props(lambda x: x.LevelText == 'None')
+    self._grid()
 
     glLoadIdentity()
     glFlush()
