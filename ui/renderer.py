@@ -115,8 +115,8 @@ class MapWidget(QtOpenGL.QGLWidget):
         continue
 
       glPushMatrix()
-      glTranslatef(prop.x, -prop.y, 0.0)
-      glRotatef(prop.Rotation * (180.0 / math.pi), 0.0, 0.0, 1.0)
+      glTranslatef(prop.x, prop.y, 0.0)
+      glRotatef(-math.degrees(prop.Rotation), 0.0, 0.0, 1.0)
       glScalef(prop.ScaleX, prop.ScaleY, 0.0)
       glTexImage2D(GL_TEXTURE_2D, 0, 3, img['x'], img['y'], 0, GL_RGB, GL_UNSIGNED_BYTE, img['ref'])
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
