@@ -180,6 +180,12 @@ class MapWidget(QtOpenGL.QGLWidget):
         glVertex3f(self.pms.max_x, y, 0)
     glEnd()
 
+
+  def initializeGL(self):
+    print 'GL_VENDOR   = {}'.format(glGetString(GL_VENDOR))
+    print 'GL_RENDERER = {}'.format(glGetString(GL_RENDERER))
+    print 'GL_VERSION  = {}'.format(glGetString(GL_VERSION))
+
   def paintGL(self):
     if not self.pms:
       return
