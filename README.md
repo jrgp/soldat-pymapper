@@ -6,8 +6,8 @@ this in its unfinished state as I'm happy with my binary map parsing code.
 Viewing/loading maps works except rendering sceneries is a bit bugged. PRs would
 be appreciated :)
 
-![ctf Ash](http://jrgp.us/screenshots/pymapper_5.png)
-![ctf Ash wireframe](http://jrgp.us/screenshots/pymapper_6.png)
+![Octopus](http://jrgp.us/screenshots/pymapper_8.png)
+![Octopus wireframe](http://jrgp.us/screenshots/pymapper_9.png)
 
 ### Install dependencies
 
