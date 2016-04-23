@@ -1,6 +1,9 @@
-# Soldat MapWizard
+# Soldat PyMapper
 
-Mapfile (PMS) editor for Soldat, written in Python using OpenGL and QT4.
+This is an unfinished attempt at making a Soldat map editor in Python + OpenGL.
+
+Currently, viewing/loading maps works except rendering sceneries is a bit bugged. PRs would
+be appreciated :)
 
 ### Install dependencies
 
@@ -17,8 +20,8 @@ On Ubuntu/Debian:
 
 On mac:
 
-    PYTHONPATH=/usr/local/lib/python2.7/site-packages/ python ui_test.py
+    PYTHONPATH=/usr/local/lib/python2.7/site-packages/ python pymapper.py
     
 On Linux:
 
-    python ui_test.py
+    python pymapper.py
