@@ -15,7 +15,7 @@ class MainWindow(QtGui.QMainWindow):
     everything together
   '''
 
-  APP_NAME = 'Soldat MapWizard'
+  APP_NAME = 'Soldat PyMapper'
 
   def __init__(self):
     super(MainWindow, self).__init__()
