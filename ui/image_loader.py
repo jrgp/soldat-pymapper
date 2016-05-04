@@ -1,5 +1,8 @@
 import os
 import Image
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GL import *
 
 
 class ImageLoader:
@@ -54,10 +57,15 @@ class ImageLoader:
     except IOError:
       self.images[key] = None
       return self.images[key]
-    # img.convert('RGBA')
 
-    # if self._transparency(img):
-    #  print '{} uses fake transparency'.format(path)
+    img.convert('RGBA')
+
+    if self._transparency(img):
+      print '{} uses fake transparency'.format(path)
+
+    ID = glGenTextures(1)
+    glBindTexture(GL_TEXTURE_2D, ID)
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1)
 
     try:
       self.images[key] = dict(
