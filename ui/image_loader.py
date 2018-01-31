@@ -1,5 +1,8 @@
 import os
-import Image
+try:
+  import Image
+except ImportError:
+  from PIL import Image
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
